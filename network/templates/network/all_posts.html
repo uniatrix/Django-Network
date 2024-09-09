@@ -1,0 +1,56 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h3 class="mb-4">All Posts</h3>
+
+            <div class="d-flex flex-column align-items-center">
+                {% for post in posts %}
+                <div class="card text-bg-dark mb-3 post-card" style="width: 100%;" id="post-{{ post.id }}">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a>
+                            <span class="time-ago ms-2" data-timestamp="{{ post.timestamp|date:'U' }}"></span>
+                            {% if post.user == request.user %}
+                                <button class="btn btn-link ms-auto" onclick="editPost({{ post.id }})">Edit</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body" id="post-content-{{ post.id }}">
+                        <p class="post-text card-text">{{ post.content }}</p>
+                        <textarea class="form-control edit-textarea" style="display:none;"></textarea>
+                        <button class="btn btn-primary mt-2 save-btn" style="display:none;" onclick="savePost({{ post.id }})">Save</button>
+                        <p class="card-text text-center">
+                            <a href="javascript:void(0);" class="btn btn-link like-btn" data-post-id="{{ post.id }}">
+                                {% if post.has_liked %}
+                                    <i class="bi bi-heart-fill" style="color: red; font-size: 1.5rem;"></i>
+                                {% else %}
+                                    <i class="bi bi-heart" style="font-size: 1.5rem;"></i>
+                                {% endif %}
+                            </a>
+                            <br>
+                            <span class="like-count">{{ post.total_likes }}</span> Like{{ post.total_likes|pluralize }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if posts.has_other_pages %}
+<div class="d-flex justify-content-center mt-4" style="gap: 15px;">
+    {% if posts.has_previous %}
+        <a href="?page={{ posts.previous_page_number }}" class="btn btn-dark">Previous</a>
+    {% endif %}
+
+    {% if posts.has_next %}
+        <a href="?page={{ posts.next_page_number }}" class="btn btn-dark">Next</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

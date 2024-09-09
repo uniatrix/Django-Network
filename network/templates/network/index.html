@@ -1,0 +1,74 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mb-4">Welcome to Network!</h1>
+            <p class="lead">Connect with your friends, share updates, and stay informed.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Create Posts</h5>
+                    <p class="card-text">Share your thoughts with your followers. Post updates and let the world know what’s on your mind.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Follow Friends</h5>
+                    <p class="card-text">Stay connected with your friends by following them. See their posts and interact with their updates.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Engage with Likes</h5>
+                    <p class="card-text">Show your appreciation by liking posts. Engage with the community and see who likes your posts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <button type="button" class="btn btn-dark mb-3" data-toggle="modal" data-target="#postModal">
+            New Post
+        </button>
+    </div>
+    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="postModalLabel">Creating New Post</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <h6>What's in your mind?</h6>
+                        <textarea class="form-control" name="content" id="content" rows="5" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-dark">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center mt-5">
+        <p>Please <a href="{% url 'login' %}">log in</a> to create a post.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

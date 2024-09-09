@@ -1,0 +1,16 @@
+    .modaltext {
+        margin-left: 30px;
+    }
+    .post-card {
+        margin-bottom: 20px;
+        max-width: 18rem;
+    }
+    .card-header span {
+        font-size: 0.8rem;
+        color: #636261;
+    }
+    .modal-dialog-centered {
+        display: flex;
+        align-items: center;
+        min-height: calc(100% - 3.5rem);
+    }
